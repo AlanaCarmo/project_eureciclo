@@ -23,7 +23,7 @@ class UploadFieldsForm(ModelForm):
     class Meta:
         model = UploadFields
 
-        fields = "__all__"
+        fields = ['title', 'file']
 
     def __init__(self, *args, **kwargs):
         super(UploadFieldsForm, self).__init__(*args, **kwargs)

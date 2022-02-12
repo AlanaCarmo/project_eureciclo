@@ -30,19 +30,44 @@ table.GeneratedTable thead {
   background-color: #ffcc00;
 }
 
+
+
+
+
+
+
+
     </style>
+
 
 </head>
 <body>
 
-
 <h5>{{ version }}</h5>
 
-<a href="{%  url 'upload_file:upload' %}">New Update</a>
-<!-- HTML Code: Place this code in the document's body (between the 'body' tags) where the table should appear -->
+<h2><a href="{%  url 'upload_file:upload' %}">New Update</a></h2>
+<h2><a href="{%  url 'upload_file:reports' %}">ver todos</a></h2>
 
 <table class="GeneratedTable">
     <h2>{{ soma }}</h2>
+    <thead>
+    <tr>
+        <th>title</th>
+        <th>file</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    {% for file in files %}
+    <tr>
+        <td>{{ file.title }}</td>
+        <td>{{ file.file }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<table class="GeneratedTable">
     <thead>
     <tr>
         <th>buyer</th>
@@ -67,6 +92,7 @@ table.GeneratedTable thead {
     {% endfor %}
     </tbody>
 </table>
+
 
 </body>
 </html>

@@ -1,17 +1,35 @@
 from django.shortcuts import render, redirect
 from .forms import UploadFieldsForm
-from .models import FieldsFiles
+from .models import FieldsFiles, UploadFields
+from django.db.models import Sum
 
 
-def report_file(request):
+def report_file_all(request):
     reports = FieldsFiles.objects.all()
+    soma = FieldsFiles.objects.aggregate(Sum('amounts'))
 
     context = {
+        'soma': soma,
         'reports': reports,
         'version': "version 0.0"
     }
 
     return render(request, 'home.html', context)
+
+
+def report_file(request, pk):
+    files = UploadFields.objects.filter(id=pk)
+    reports = FieldsFiles.objects.filter(upload_fields=pk)
+    soma = FieldsFiles.objects.filter(upload_fields=pk).aggregate(Sum('price'))
+
+    context = {
+        'soma': soma,
+        'reports': reports,
+        'files': files,
+        'version': "version 0.0"
+    }
+
+    return render(request, 'report_filter.html', context)
 
 
 def upload_file(request):
@@ -20,11 +38,15 @@ def upload_file(request):
     if request.method == "POST":
         if upload_fields_form.is_valid():
             response = process_file(request.FILES['file'])
-            response = create_volume(response)
-            FieldsFiles.objects.bulk_create(FieldsFiles(**user) for user in response)
             upload_fields_form.save()
 
-            return redirect('upload_file:reports')
+            title = request.POST['title']
+            id_title = UploadFields.objects.get(title=title).id
+
+            response = create_volume(response, id_title)
+            FieldsFiles.objects.bulk_create(FieldsFiles(**user) for user in response)
+
+            return redirect('report/' + f'{id_title}')
 
     context = {
         'upload_fields_form': upload_fields_form,
@@ -44,10 +66,12 @@ def process_file(file):
     return response
 
 
-def create_volume(values):
+def create_volume(values, title):
     response = []
+
     for value in values:
         dict_insert = {}
+        dict_insert.update({'upload_fields_id': title})
         dict_insert.update({"buyer": value[0]})
         dict_insert.update({"description": value[1]})
         dict_insert.update({"price": value[2]})
