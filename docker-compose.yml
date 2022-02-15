@@ -11,8 +11,33 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - postgres
+      - postgres_django
+
+  web:
+    image: eureciclo
+    depends_on:
+      - migration
+    working_dir: /code/eureciclo
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    networks:
+      - postgres_django
+
+  migration:
+    build: .
+    image: eureciclo
+    working_dir: /code/eureciclo
+    command: python manage.py migrate
+    volumes:
+        - .:/code
+    networks:
+      - postgres_django
+    depends_on:
+      - db_postgres
 
 networks:
-  postgres:
+  postgres_django:
     driver: bridge

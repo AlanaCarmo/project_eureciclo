@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-dn@@=aw2o6j_q_bo@y6kl25w-&6pt&i^39$a^8xjx=_su^q&+n
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'eureciclo.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'HOST': 'localhost',
+        'HOST': 'db_postgres',
         'PORT': 5432,
         'USER': 'admin',
         'PASSWORD': 'rny9He^pyN',
@@ -108,7 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pt-br'
 
 TIME_ZONE = 'UTC'
 

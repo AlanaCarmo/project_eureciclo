@@ -5,34 +5,40 @@ from django.db.models import Sum
 
 
 def report_file_all(request):
+    """ Function that returns all documents. """
+
     reports = FieldsFiles.objects.all()
-    soma = FieldsFiles.objects.aggregate(Sum('amounts'))
+    revenue = FieldsFiles.objects.aggregate(Sum('price'))
+    revenue = revenue.get('price__sum')
 
     context = {
-        'soma': soma,
+        'revenue': revenue,
         'reports': reports,
-        'version': "version 0.0"
     }
 
-    return render(request, 'home.html', context)
+    return render(request, 'report_all.html', context)
 
 
 def report_file(request, pk):
+    """ Function that returns the imported document. """
+
     files = UploadFields.objects.filter(id=pk)
     reports = FieldsFiles.objects.filter(upload_fields=pk)
-    soma = FieldsFiles.objects.filter(upload_fields=pk).aggregate(Sum('price'))
+    revenue = FieldsFiles.objects.filter(upload_fields=pk).aggregate(Sum('price'))
+    revenue = revenue.get('price__sum')
 
     context = {
-        'soma': soma,
+        'revenue': revenue,
         'reports': reports,
         'files': files,
-        'version': "version 0.0"
     }
 
     return render(request, 'report_filter.html', context)
 
 
 def upload_file(request):
+    """ Function to import and index in the database. """
+
     upload_fields_form = UploadFieldsForm(request.POST or None, request.FILES or None)
 
     if request.method == "POST":
@@ -42,7 +48,6 @@ def upload_file(request):
 
             title = request.POST['title']
             id_title = UploadFields.objects.get(title=title).id
-
             response = create_volume(response, id_title)
             FieldsFiles.objects.bulk_create(FieldsFiles(**user) for user in response)
 
@@ -56,6 +61,8 @@ def upload_file(request):
 
 
 def process_file(file):
+    """ Function to clear the return. """
+
     response = []
     for line in file:
         line = str(line, "utf-8")
@@ -67,8 +74,9 @@ def process_file(file):
 
 
 def create_volume(values, title):
-    response = []
+    """ Function to create volume that will be indexed. """
 
+    response = []
     for value in values:
         dict_insert = {}
         dict_insert.update({'upload_fields_id': title})

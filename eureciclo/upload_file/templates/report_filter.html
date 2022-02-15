@@ -6,54 +6,60 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-
+    <title>eureciclo</title>
     <style>
-table.GeneratedTable {
-  width: 100%;
-  background-color: #ffffff;
-  border-collapse: collapse;
-  border-width: 2px;
-  border-color: #ffcc00;
-  border-style: solid;
-  color: #000000;
-}
+        html, body {
+        justify-content: center;
+        height: 100%;
 
-table.GeneratedTable td, table.GeneratedTable th {
-  border-width: 2px;
-  border-color: #ffcc00;
-  border-style: solid;
-  padding: 3px;
-}
+        font-family: Roboto, Arial, sans-serif;
+        font-size: 16px;
+        }
 
-table.GeneratedTable thead {
-  background-color: #ffcc00;
-}
+        table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+        }
 
+        td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+        }
 
+        tr:nth-child(even) {
+        background-color: #dddddd;
+        }
 
-
-
-
+        button {
+        padding: 10px 25px;
+        text-align: center;
+        display: inline-block;
+        font-size: 15px;
+        margin: 5px 3px;
+        cursor: pointer;
+        }
 
 
     </style>
-
-
 </head>
 <body>
+<br>
+<a href="{%  url 'upload_file:upload' %}">
+    <button>New Update File</button>
+</a>
 
-<h5>{{ version }}</h5>
-
-<h2><a href="{%  url 'upload_file:upload' %}">New Update</a></h2>
-<h2><a href="{%  url 'upload_file:reports' %}">ver todos</a></h2>
-
-<table class="GeneratedTable">
-    <h2>{{ soma }}</h2>
+<a href="{%  url 'upload_file:reports' %}">
+    <button>See all</button>
+</a>
+<br>
+<br>
+<table>
     <thead>
     <tr>
-        <th>title</th>
-        <th>file</th>
+        <th>Title</th>
+        <th>Total gross revenue</th>
     </tr>
     </thead>
 
@@ -61,13 +67,14 @@ table.GeneratedTable thead {
     {% for file in files %}
     <tr>
         <td>{{ file.title }}</td>
-        <td>{{ file.file }}</td>
+        <td>{{ revenue }}</td>
     </tr>
     {% endfor %}
     </tbody>
 </table>
-
-<table class="GeneratedTable">
+<br>
+<br>
+<table>
     <thead>
     <tr>
         <th>buyer</th>
