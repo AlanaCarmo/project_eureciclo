@@ -24,7 +24,8 @@ def report_file(request, pk):
 
     files = UploadFields.objects.filter(id=pk)
     reports = FieldsFiles.objects.filter(upload_fields=pk)
-    revenue = FieldsFiles.objects.filter(upload_fields=pk).aggregate(Sum('price'))
+    revenue = FieldsFiles.objects.filter(
+        upload_fields=pk).aggregate(Sum('price'))
     revenue = revenue.get('price__sum')
 
     context = {
@@ -39,7 +40,8 @@ def report_file(request, pk):
 def upload_file(request):
     """ Function to import and index in the database. """
 
-    upload_fields_form = UploadFieldsForm(request.POST or None, request.FILES or None)
+    upload_fields_form = UploadFieldsForm(
+        request.POST or None, request.FILES or None)
 
     if request.method == "POST":
         if upload_fields_form.is_valid():
@@ -49,7 +51,8 @@ def upload_file(request):
             title = request.POST['title']
             id_title = UploadFields.objects.get(title=title).id
             response = create_volume(response, id_title)
-            FieldsFiles.objects.bulk_create(FieldsFiles(**user) for user in response)
+            FieldsFiles.objects.bulk_create(
+                FieldsFiles(**user) for user in response)
 
             return redirect('report/' + f'{id_title}')
 

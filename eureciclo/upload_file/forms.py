@@ -14,7 +14,8 @@ class FieldsFilesForm(ModelForm):
         super(FieldsFilesForm, self).__init__(*args, **kwargs)
         for field in self.fields.values():
             field.error_messages = {
-                'required': '{fieldname} required.'.format(fieldname=field.label)}
+                'required': '{fieldname} required.'.format(
+                    fieldname=field.label)}
 
 
 class UploadFieldsForm(ModelForm):
@@ -22,11 +23,12 @@ class UploadFieldsForm(ModelForm):
 
     class Meta:
         model = UploadFields
-
         fields = ['title', 'file']
+        # required = ('title', 'file')
 
     def __init__(self, *args, **kwargs):
         super(UploadFieldsForm, self).__init__(*args, **kwargs)
         for field in self.fields.values():
             field.error_messages = {
-                'required': '{fieldname} required.'.format(fieldname=field.label)}
+                'required': '{fieldname} required.'.format(
+                    fieldname=field.label)}
