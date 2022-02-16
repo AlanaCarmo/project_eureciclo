@@ -52,7 +52,7 @@ def upload_file(request):
             id_title = UploadFields.objects.get(title=title).id
             response = create_volume(response, id_title)
             FieldsFiles.objects.bulk_create(
-                FieldsFiles(**user) for user in response)
+                FieldsFiles(**value) for value in response)
 
             return redirect('report/' + f'{id_title}')
 
